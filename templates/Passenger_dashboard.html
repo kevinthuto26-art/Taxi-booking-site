@@ -1,0 +1,72 @@
+<h1>Passenger Dashboard 🚕</h1>
+
+<h2>Request a Ride</h2>
+
+<form action="/request_ride" method="post">
+
+<p>Pickup Location</p>
+<input type="text" name="pickup" required>
+
+<p>Destination</p>
+<input type="text" name="destination" required>
+
+<br><br>
+
+<button type="submit">Request Ride</button>
+
+</form>
+
+<hr>
+
+<h2>Your Current Ride</h2>
+
+<div id="ride_status">
+
+{% if ride %}
+
+<div style="border:1px solid black;padding:10px;margin:10px">
+
+<p><b>Pickup:</b> {{ ride[1] }}</p>
+<p><b>Destination:</b> {{ ride[2] }}</p>
+<p><b>Status:</b> {{ ride[3] }}</p>
+
+{% if ride[3] == "waiting" %}
+<p>⏳ Waiting for driver...</p>
+{% endif %}
+
+{% if ride[3] == "accepted" %}
+<p style="color:green;font-weight:bold">
+🚕 Driver accepted your ride!
+</p>
+{% endif %}
+
+</div>
+
+{% else %}
+
+<p>No ride requested yet.</p>
+
+{% endif %}
+
+</div>
+
+<script>
+
+{% if ride %}
+setInterval(function(){
+location.reload();
+}, 5000);
+{% endif %}
+
+{% if ride and ride[3] == "waiting" %}
+localStorage.removeItem("rideAcceptedShown");
+{% endif %}
+
+{% if ride and ride[3] == "accepted" %}
+if(!localStorage.getItem("rideAcceptedShown")){
+alert("🚕 Driver accepted your ride!");
+localStorage.setItem("rideAcceptedShown","true");
+}
+{% endif %}
+
+</script>
