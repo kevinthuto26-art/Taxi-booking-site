@@ -1,0 +1,29 @@
+<h1>MyRide Status</h1>
+
+{% for ride in accepted_rides %}
+
+<div style="border:1px solid black; padding:10px; margin:10px;">
+
+<p><b>Pickup:</b> {{ ride[1] }}</p>
+<p><b>Destination:</b> {{ ride[2] }}</p>
+<p><b>Status:</b> {{ ride[3] }}</p>
+
+{% if ride[3] == "waiting" %}
+<p>⏳ Waiting for driver...</p>
+{% endif %}
+
+{% if ride[3] == "accepted" %}
+<p style="color:green;font-weight:bold;">
+🚕 Driver accepted your ride! Driver is on the way.
+</p>
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+<script>
+setInterval(function(){
+location.reload();
+}, 5000);
+</script>
