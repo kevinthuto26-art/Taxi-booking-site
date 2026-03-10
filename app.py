@@ -1,22 +1,30 @@
-from flask import Flask, render_template, request,redirect
+from flask import Flask, render_template, request, redirect
 import database
-from auth import auth
-
 
 app = Flask(__name__)
 
 database.init_db()
-
-app.register_blueprint(auth)
 
 @app.route("/")
 def home():
     return render_template("home.html")
 
 
+# PASSENGER LOGIN
+@app.route("/passenger_login")
+def passenger_login():
+    return render_template("passenger_login.html")
+
+
+# DRIVER LOGIN
+@app.route("/driver_login")
+def driver_login():
+    return render_template("driver_login.html")
+
+
+# PASSENGER DASHBOARD
 @app.route("/passenger_dashboard")
 def passenger_dashboard():
-
     ride = database.get_latest_ride()
 
     return render_template(
@@ -24,27 +32,20 @@ def passenger_dashboard():
         ride=ride
     )
 
+
+# REQUEST RIDE
 @app.route("/request_ride", methods=["POST"])
 def request_ride():
 
     pickup = request.form["pickup"]
     destination = request.form["destination"]
 
-    # save ride to database
     database.add_ride(pickup, destination)
-  
+
     return redirect("/passenger_dashboard")
 
 
-@app.route("/passenger_register")
-def passenger_register():
-    return render_template("passenger_register.html")
-
-@app.route("/driver_login")
-def driver_login():
-    return render_template("driver_login.html")
-
-
+# DRIVER DASHBOARD
 @app.route("/driver_dashboard")
 def driver_dashboard():
 
@@ -58,6 +59,16 @@ def driver_dashboard():
     )
 
 
+# ACCEPT RIDE
+@app.route("/accept_ride/<int:ride_id>")
+def accept_ride(ride_id):
+
+    database.accept_ride(ride_id)
+
+    return redirect("/driver_dashboard")
+
+
+# PASSENGER STATUS
 @app.route("/ride_status")
 def ride_status():
 
@@ -71,12 +82,5 @@ def ride_status():
     )
 
 
-@app.route("/accept_ride/<int:ride_id>")
-def accept_ride(ride_id):
-
-    database.accept_ride(ride_id)
-
-    return redirect("/driver_dashboard")
-
 if __name__ == "__main__":
-        app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000)
