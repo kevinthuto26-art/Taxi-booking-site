@@ -10,18 +10,6 @@ def home():
     return render_template("home.html")
 
 
-# PASSENGER LOGIN
-@app.route("/passenger_login")
-def passenger_login():
-    return render_template("passenger_login.html")
-
-
-# DRIVER LOGIN
-@app.route("/driver_login")
-def driver_login():
-    return render_template("driver_login.html")
-
-
 # PASSENGER DASHBOARD
 @app.route("/passenger_dashboard")
 def passenger_dashboard():
