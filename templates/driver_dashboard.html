@@ -21,3 +21,20 @@
 </div>
 
 {% endfor %}
+
+<script>
+let rideCount = {{ waiting_rides|length }};
+
+setInterval(function(){
+    fetch("/driver_dashboard")
+    .then(response => response.text())
+    .then(html => {
+        let newCount = (html.match(/Accept Ride/g) || []).length;
+
+        if(newCount > rideCount){
+            alert("🚕 New Ride Request!");
+            location.reload();
+        }
+    });
+}, 5000);
+</script>
