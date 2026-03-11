@@ -1,7 +1,5 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-<meta http-equiv="refresh" content="5">
-
 <h1>Driver Dashboard</h1>
 
 <h2>Ride Requests</h2>
@@ -31,9 +29,10 @@ setInterval(function(){
     .then(html => {
         let newCount = (html.match(/Accept Ride/g) || []).length;
 
-        if(newCount > rideCount){
-            alert("🚕 New Ride Request!");
-            location.reload();
+        if(newCount > rideCount){    
+           alert("🚕 New Ride Request!");
+           rideCount = newCount;
+           location.reload();
         }
     });
 }, 5000);
