@@ -40,9 +40,7 @@ def passenger_login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        print(username, password)
-
-        if username == "passenger" and password == "1234":
+        if username in passengers and passengers[username] == password:
             return redirect("/passenger_dashboard")
 
         return "Invalid login"
@@ -54,15 +52,16 @@ def passenger_login():
 def driver_login():
 
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-        if username == "driver" and password == "1234":
+        if username in drivers and drivers[username] == password:
             return redirect("/driver_dashboard")
 
         return "Invalid login"
 
     return render_template("driver_login.html")
+
 
 # DRIVER DASHBOARD
 @app.route("/driver_dashboard")
