@@ -124,5 +124,32 @@ def book_ride():
     return render_template("book_ride.html")
 
 
+passengers = {}
+drivers = {}
+
+@app.route("/register_passenger", methods=["GET","POST"])
+def register_passenger():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        passengers[username] = password
+        return redirect("/passenger_login")
+
+    return render_template("register_passenger.html")
+
+
+@app.route("/register_driver", methods=["GET","POST"])
+def register_driver():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        drivers[username] = password
+        return redirect("/driver_login")
+
+    return render_template("register_driver.html")
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
