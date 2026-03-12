@@ -29,10 +29,13 @@ def passenger_dashboard():
 @app.route("/request_ride", methods=["POST"])
 def request_ride():
 
+    passenger_id = session["username"]
+
     pickup = request.form["pickup"]
     destination = request.form["destination"]
+    pickup_time = request.form["pickup_time"]
 
-    database.add_ride(pickup, destination)
+    database.add_ride(passenger_id, pickup, destination, pickup_time)
 
     return redirect("/passenger_dashboard")
 
@@ -85,7 +88,9 @@ def driver_dashboard():
 @app.route("/accept_ride/<int:ride_id>")
 def accept_ride(ride_id):
 
-    database.accept_ride(ride_id)
+    driver_id = session["username"]
+
+    database.assign_driver(ride_id, driver_id)
 
     return redirect("/driver_dashboard")
 
