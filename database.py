@@ -6,25 +6,29 @@ def init_db():
     c = conn.cursor()
 
     c.execute("""
-    CREATE TABLE IF NOT EXISTS rides (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        pickup TEXT,
-        destination TEXT,
-        status TEXT
-    )
-    """)
-
+CREATE TABLE IF NOT EXISTS rides (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    passenger_id TEXT,
+    driver_id TEXT,
+    pickup TEXT,
+    destination TEXT,
+    pickup_time TEXT,
+    status TEXT
+)
+""")
+    
     conn.commit()
     conn.close()
 
 
-def add_ride(pickup, destination):
+def add_ride(passenger_id, pickup, destination, pickup_time):
+
     conn = sqlite3.connect("rides.db")
     c = conn.cursor()
 
     c.execute(
-        "INSERT INTO rides (pickup, destination, status) VALUES (?, ?, ?)",
-        (pickup, destination, "waiting")
+        "INSERT INTO rides (passenger_id, driver_id, pickup, destination, pickup_time, status) VALUES (?, ?, ?, ?, ?, ?)",
+        (passenger_id, None, pickup, destination, pickup_time, "waiting")
     )
 
     conn.commit()
